@@ -5,26 +5,23 @@ import java.util.Random;
 
 
 import fr.songbird.generator.cmdmanager.CharacteristicsFlags;
-import fr.songbird.tools.ScannerHM;
 import fr.songbird.testermdp.MdpTester;
 
-import fr.songbird.survivalDevKit.*;
 
 import net.wytrem.logging.*;
 
 
 /**
- * Chief class of the program. cf. constructor javadoc.
+ * Chief class of the program.
  * @author songbird
- * @version 0.1_0-ALPHA This development phase is attributed to all classes of the program.
+ * @version 1.3_4-ALPHA
+ * @see Generator#Generator(CharacteristicsFlags, byte)
  */
 public class Generator implements SizeMdp{
 	
 	//###### PRIVATE VARIABLES ######
 	
 	private static final BasicLogger logger = LoggerFactory.getLogger(Generator.class);
-	
-	private ScannerHM readerKeyBoard = null;
 	
 
 	
@@ -39,9 +36,8 @@ public class Generator implements SizeMdp{
 	//###### CONSTRUCTOR(S) ######
 	/**
 	 * Generator generates so many of characters that number of iterations given in parameter.
-	 * @param The current reader 
-	 * @param Number of iteration == Number of characters
-	 * @param State of flag
+	 * @param sizeMDP Number of iteration == Number of characters.
+	 * @param state State of flag.
 	 */
 	public Generator(CharacteristicsFlags state, byte sizeMDP){
 		new MdpTester(passwordFactory(sizeMDP, state));
@@ -50,6 +46,10 @@ public class Generator implements SizeMdp{
 	
 	
 	//###### PRIVATE METHODS ######
+	/**
+	 * The alphbUpperCase method converts alphbLowerCase array in upper case array, obviously.
+	 * @return
+	 */
 	private String[] alphbUpperCase(){
 		String[] alphbUpperCase = new String[0x1A];
 		
@@ -58,7 +58,13 @@ public class Generator implements SizeMdp{
 		}
 		return alphbUpperCase;
 	}
-	
+	/**
+	 * 
+	 * @param sizeMDP the password size.
+	 * @param state State of flag.
+	 * @return String a warning message.
+	 * @see Generator#Generator(CharacteristicsFlags, byte)
+	 */
 	private String passwordFactory(byte sizeMDP, CharacteristicsFlags state){
 		if(itsConsistent(sizeMDP)){
 			switch(state.getStateOfFlag()){
@@ -70,12 +76,18 @@ public class Generator implements SizeMdp{
 				case "lM": return withLowerCaseandUpperCase(sizeMDP);
 				case "ilM": return EveryFlags(sizeMDP);
 				default:
-					return "L'ordre d'apparition des arguments n'est pas respecté.";
+					return unknownCommand();
 			}
 		}
 		return "La taille proposée n'est pas conforme aux attentes du générateur.";
 	}
 	
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return true if the password size have the expected size by interface SizeMdp.
+	 * @see SizeMdp
+	 */
 	private boolean itsConsistent(byte sizeMDP){
 		switch(sizeMDP){
 			case THREE: return true;
@@ -88,99 +100,151 @@ public class Generator implements SizeMdp{
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return a compound password of integers only.
+	 * @see {@link Generator#withLowerCaseOnly(byte)}
+	 * {@link Generator#withIntandUpperCaseOnly(byte)}
+	 * {@link Generator#withIntandLowerCaseOnly(byte)}
+	 * {@link Generator#withIntandUpperCaseOnly(byte)}
+	 * {@link Generator#withLowerCaseandUpperCase(byte)}
+	 * {@link Generator#EveryFlags(byte)}
+	 */
 	private String withIntOnly(byte sizeMDP){ 
 		Random random = new Random();
 		byte i = 0x0;
 		String password = new String("");
 		while(i<sizeMDP){
 			password += String.valueOf(random.nextInt(LIMITOFGENERATION));
-			logger.log(LogLevel.WARNING, "Generator.password == "+password);
 			i++;
 		}
 		return password;
 	}
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return a compound password of lower cases only;
+	 */
 	private String withLowerCaseOnly(byte sizeMDP){
 		Random random = new Random();
 		byte i = 0x0;
 		String password = new String("");
 		while(i<sizeMDP){
-			password += alphbLowerCase[random.nextInt(0x19)];
+			password += alphbLowerCase[random.nextInt(0x1A)];
 			i++;
 		}
 		return password;
 	}
-	
+	/**
+	 * 
+	 * @param wLCOreturn
+	 * @return a compound password of upper cases only;
+	 */
 	private String withUpperCaseOnly(String wLCOreturn){
 		return wLCOreturn.toUpperCase();
 	}
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return a compound password of integers and lower cases.
+	 */
 	private String withIntandLowerCaseOnly(byte sizeMDP){
 		Random random = new Random();
 		String password = new String("");
-		return zeroOrOne(password, sizeMDP, random);
-		
-	}
-	private String withIntandUpperCaseOnly(byte sizeMDP){
-		Random random = new Random();
-		String password = new String("");
-		return zeroOrOne(password, sizeMDP, random);
-	}
-	private String withLowerCaseandUpperCase(byte sizeMDP){
-		Random random = new Random();
 		byte i = 0x0;
-		String password = new String("");
-		while(i<sizeMDP){
-			if(random.nextInt(1) == 0){
-				password += alphbUpperCase[random.nextInt(0x19)];
-				i++;
-			}
-			else{
-				password += alphbLowerCase[random.nextInt(0x19)];
-				i++;
-			}
-		}
-		return password;
-	}
-	private String EveryFlags(byte sizeMDP){
-		Random random = new Random();
-		byte i = 0x0;
-		String password = new String("");
 		while(i<sizeMDP){
 			if(random.nextInt(0x2) == 0x0){
 				password += String.valueOf(random.nextInt(LIMITOFGENERATION));
 				i++;
 			}
-			else if(random.nextInt(0x2) == 0x1){
-				password += alphbLowerCase[random.nextInt(0x19)];
+			else{
+				password += alphbLowerCase[random.nextInt(0x1A)];
 				i++;
 			}
-			else if(random.nextInt(0x2) == 0x2){
-				password += alphbUpperCase[random.nextInt(0x19)];
+		}
+		
+		return password;
+		
+	}
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return a compound password of integers and upper cases.
+	 */
+	private String withIntandUpperCaseOnly(byte sizeMDP){
+		Random random = new Random();
+		String password = new String("");
+		byte i = 0x0;
+		while(i<sizeMDP){
+			if(random.nextInt(0x2) == 0x0){
+				password += String.valueOf(random.nextInt(LIMITOFGENERATION));
+				i++;
+			}
+			else{
+				password += alphbUpperCase[random.nextInt(0x1A)];
+				i++;
+			}
+		}
+		
+		return password;
+	}
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return a compound password of lower cases and upper cases.
+	 */
+	private String withLowerCaseandUpperCase(byte sizeMDP){
+		Random random = new Random();
+		byte i = 0x0;
+		String password = new String("");
+		while(i<sizeMDP){
+			if(random.nextInt(0x2) == 0x0){
+				password += alphbUpperCase[random.nextInt(0x1A)];
+				i++;
+			}
+			else{
+				password += alphbLowerCase[random.nextInt(0x1A)];
+				i++;
+			}
+		}
+		return password;
+	}
+	/**
+	 * 
+	 * @param sizeMDP
+	 * @return a alphanumeric password that supports upper and lower cases.
+	 */
+	private String EveryFlags(byte sizeMDP){
+		Random random = new Random();
+		byte i = 0x0;
+		String password = new String("");
+		while(i<sizeMDP){
+			if(random.nextInt(0x3) == 0x0){
+				password += String.valueOf(random.nextInt(LIMITOFGENERATION));
+				i++;
+			}
+			else if(random.nextInt(0x3) == 0x1){
+				password += alphbLowerCase[random.nextInt(0x1A)];
+				i++;
+			}
+			else if(random.nextInt(0x3) == 0x2){
+				password += alphbUpperCase[random.nextInt(0x1A)];
 				i++;
 			}
 			
 		}
 		return password;
 	}
-	
-	private void unknownCommand(){
-		logger.log(LogLevel.ERROR, "L'ordre d'apparition des arguments n'a pas été respecté, fermeture de l'application...");
+	/**
+	 * 
+	 * @return
+	 */
+	private String unknownCommand(){
+		return "L'ordre d'apparition des arguments n'a pas été respecté, fermeture de l'application...";
 		
 	}
-	
-	private String zeroOrOne(String password, byte sizeMDP, Random random){
-		byte i = 0x0;
-		while(i<sizeMDP){
-			if(random.nextInt(0x1) == 0x0){
-				password += String.valueOf((byte)random.nextInt());
-			}
-			else{
-				password += alphbLowerCase[random.nextInt(0x19)];
-			}
-		}
-		
-		return password;
-	}
+
 	
 	
 	//###### PUBLIC METHODS ######
@@ -190,7 +254,7 @@ public class Generator implements SizeMdp{
 	 * For getInstanceOfGenerator doc, cf {@link Generator#Generator(CharacteristicsFlags)}
 	 * @param command state.
 	 * @return  instance of the generator.
-	 *
+	 */
 	public static final Generator getInstanceOfGenerator(CharacteristicsFlags state){
 		String className = Generator.class.getName();
 		Class<?> generatorClass = null;
@@ -207,7 +271,7 @@ public class Generator implements SizeMdp{
 			System.exit(1);
 		}
 		return (Generator)instanceOfGenerator;
-	}*/
+	}
 	
 
 }

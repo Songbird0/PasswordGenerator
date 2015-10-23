@@ -1,7 +1,8 @@
 package fr.songbird.generator.cmdmanager;
 /**
- * <p>They are differents states that commands can have</p>
+ * Different states that commands can have
  * @author songbird
+ * @version 0.2_0-ALPHA
  */
 public enum CharacteristicsFlags{
 	WithIntOnly("i"),

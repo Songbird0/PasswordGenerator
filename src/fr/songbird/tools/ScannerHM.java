@@ -7,17 +7,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 /**
  * 
- * @author songbird
  *	A Scanner class home made.
+ * @author songbird
+ * @version 0.1_0-ALPHA
  */
 public class ScannerHM {
 	private BufferedReader reader = null;
-	private ScannerHM readerKeyBoard = null;
 	
 	/**
 	 * CONSTRUCTORS
 	 */
-	
+	/**
+	 * This constructor allowing preparation for to read the input stream.
+	 * @param inputstream
+	 */
 	public ScannerHM(InputStream inputstream){
 		if(inputstream.equals(System.in)){
 			reader = new BufferedReader(new InputStreamReader(inputstream));
@@ -25,7 +28,10 @@ public class ScannerHM {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @return the input keyboard.
+	 */
 	public String ReadInputKeyboard(){
 		String iKeyBoard = null;
 		try{
@@ -35,6 +41,10 @@ public class ScannerHM {
 		}
 		return iKeyBoard;
 	}
+	/**
+	 * 
+	 * @return an integer. Else, catch an NumberFormatException.
+	 */
 	public int ReadAndParseInt(){
 		String iKeyBoard = null;
 		try{
@@ -51,6 +61,10 @@ public class ScannerHM {
 		return Integer.parseInt(iKeyBoard);
 	}
 	
+	/**
+	 * 
+	 * @return current instance.
+	 */
 	public ScannerHM getCurrentInstanceSHM(){
 		return this;
 	}

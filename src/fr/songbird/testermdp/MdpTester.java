@@ -15,7 +15,7 @@ import net.wytrem.logging.LoggerFactory;
 /**
  * MdpTest attributes a tag to generated passwords by Generator class.
  * @author songbird
- * @version 0.1_0-ALPHA
+ * @version 0.1_1-ALPHA
  * @see{@link{fr.songbird.generator.Generator}}
  *
  */
@@ -40,7 +40,7 @@ public class MdpTester {
 		getAppropriateFlagsInString((byte)10);
 		DiffcultyArrayinitialization();
 		CheckEntry checker = new CheckEntry();
-		checker.entryChecking(password);
+		checker.entryChecking(password, true);
 		for(HashMap.Entry<SolidityFlags, byte[]>DA : difficultyArray.entrySet()){
 			if(standardPassword(password, DA.getValue())){
 				logger.log(LogLevel.SUCCESS, "Félicitations ! Votre mot de passe respecte les 'standards' de sécurité du générateur.");
@@ -53,7 +53,7 @@ public class MdpTester {
 	private boolean standardPassword(String password, byte[] occurrenceArray){
 		CheckEntry checker = new CheckEntry();
 		
-		checker.entryChecking(password);
+		checker.entryChecking(password, false);
 		for(byte i = 0x0; i<occurrenceArray.length; i++){
 			if(checker.getOccurrenceNumberSum() == getOccurrenceArraySum(occurrenceArray)){
 				if(checker.compairToOccurrenceArray(occurrenceArray)){
