@@ -1,16 +1,36 @@
 package fr.songbird.generator.cmdmanager;
 
 
+
+
+
+
 import fr.songbird.generator.Generator;
 import fr.songbird.tools.ScannerHM;
 
 import fr.songbird.survivalDevKit.CheckInt;
-import fr.songbird.survivalDevKit.Downloader;
 import net.wytrem.logging.BasicLogger;
 import net.wytrem.logging.LogLevel;
 import net.wytrem.logging.LoggerFactory;
 /**
- * 
+ * <p>
+ *   PasswordGenerator<br/>
+ *   Copyright (C) 2015  Songbird<br/>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.<br/><br/><br/>
+ * </p>
  * @author songbird
  * @version 0.3_4-ALPHA
  * @since PasswordGenerator-0.1_0-ALPHA
@@ -23,18 +43,15 @@ public class CmdManager {
 	 * A unique logger, for all govern.
 	 */
 	private final static BasicLogger logger = LoggerFactory.getLogger(CmdManager.class);
-	/**
-	 * Reference of current instance.
-	 */
+
 	private final ScannerHM readerKeyBoard = new ScannerHM (System.in);
-	
 	
 	/**
 	 * Character number given in parameter by the user.
 	 */
 	private static byte characterNumber;
 
-	
+	//private static String[] argsOfMethodMain = null;
 	
 	//###### PUBLIC VARIABLES #####
 	
@@ -52,17 +69,8 @@ public class CmdManager {
 	 * 
 	 */
 	public CmdManager(){
-		String inputKeyBoardCatcher = null, command = null, lang = null;
-		System.out.println("French or english speaker ? [FR/EN]:");
-		lang = readerKeyBoard.ReadInputKeyboard();
-		//TODO Structure conditionnelle provisoire 
-		if(lang.equals("FR")){
-			downloadInformationUser((lang.equals("FR")? "LISEZ_MOI_FR": "READ_ME_EN"),
-					lang.equals("FR")? "https://www.dropbox.com/s/khocq519rsyuzj0/LISEZ_MOI_FR.html?&dl=1" : "sorry, but the 'readme' in english isn't  yet avalable. Soon ;-)");
-		}
-		else{
-			System.out.println("sorry, but the 'readme' in english isn't  yet avalable. Soon ;-)\n\n");
-		}
+		String inputKeyBoardCatcher = null, command = null;
+
 		System.out.print("Choose your flags (i ,l, M, il, iM, lM, or ilM): ");
 		inputKeyBoardCatcher= readerKeyBoard.ReadInputKeyboard();
 		int indexOfFlags = inputKeyBoardCatcher.indexOf("-")+1;
@@ -142,14 +150,7 @@ public class CmdManager {
 				return CharacteristicsFlags.UnknownCommand;
 		}
 	}
-	/**
-	 * This method downloads and reads the documents.
-	 * @param filename 
-	 * @see Downloader
-	 */
-	private void downloadInformationUser(String filename, String fileURL){
-		new Downloader(fileURL, filename);
-	}
+
 	
 	
 	//###### PUBLIC METHODS ######
@@ -177,14 +178,7 @@ public class CmdManager {
 		return isIntOrNot;
 		
 	}
-	public static void main(String[] args){
-
-		if(CmdManager.argDetection(args)){
-			new CmdManager();
-		}else{
-			Runtime.getRuntime().exit(1);
-		}
-	}
 	
+
 
 }

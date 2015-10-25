@@ -11,12 +11,33 @@ import fr.songbird.survivalDevKit.CheckEntry;
 import net.wytrem.logging.BasicLogger;
 import net.wytrem.logging.LogLevel;
 import net.wytrem.logging.LoggerFactory;
+import fr.songbird.generator.Generator;
 
 /**
+ * <p>
+ *   PasswordGenerator<br/>
+ *   Copyright (C) 2015  Songbird<br/>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.<br/><br/><br/>
+ * </p>
+ * 
+ * 
  * MdpTest attributes a tag to generated passwords by Generator class.
  * @author songbird
- * @version 0.1_1-ALPHA
- * @see{@link{fr.songbird.generator.Generator}}
+ * @version 0.1_2-ALPHA
+ * @see {@link fr.songbird.generator.Generator}
  *
  */
 public class MdpTester {
@@ -31,20 +52,22 @@ public class MdpTester {
 	
 	public MdpTester(String testTarget){
 		pwg = testProcedure(testTarget);
+		if(pwg.getPasswordGenerated().equals(Generator.getFatalError())){
+			logger.log(LogLevel.ERROR, "Une erreur bloquante est survenue: "+Generator.getFatalError());
+		}
 		logger.log(LogLevel.SUCCESS, "Mot de passe: "+pwg.getPasswordGenerated()+"\n Flag de sécurité: ["+pwg.getSolidityFlags()+"]");
 	}
 	
 	//###### PRIVATE METHODS ######
 	
 	private PasswordGenerated testProcedure(String password){
-		getAppropriateFlagsInString((byte)10);
 		DiffcultyArrayinitialization();
 		CheckEntry checker = new CheckEntry();
 		checker.entryChecking(password, true);
 		for(HashMap.Entry<SolidityFlags, byte[]>DA : difficultyArray.entrySet()){
 			if(standardPassword(password, DA.getValue())){
 				logger.log(LogLevel.SUCCESS, "Félicitations ! Votre mot de passe respecte les 'standards' de sécurité du générateur.");
-				Runtime.getRuntime().exit(0);
+				return new PasswordGenerated(password, getAppropriateFlags(checker.getOccurrenceNumberSum()));
 			}
 		}
 		logger.log(LogLevel.WARNING, "Votre mot de passe ne respecte pas les 'standards' de sécurité du générateur, mais reste solide malgré tout.");
@@ -71,6 +94,7 @@ public class MdpTester {
 		}
 		return sum;
 	}
+	@SuppressWarnings("unused")
 	/**
 	 * 
 	 * @param passwordLength
