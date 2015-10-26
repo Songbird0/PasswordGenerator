@@ -24,7 +24,7 @@ public interface SizeMdp {
 	 * Standard password sizes.
 	 * @see Generator#Generator(CharacteristicsFlags, byte)
 	 */
-	public final byte THREE = 0x3, SIX = 0x6, NINE = 0x9, TWENTY = 0xC, EIGHTEEN = 0x12;
+	public final byte THREE = 0x3, SIX = 0x6, NINE = 0x9, TWENTY = 0xC, FIFTEEN = 0xF;
 	/**
 	 * Limit of generation given in parameter to class Random
 	 * @see java.util.Random#nextInt(int)

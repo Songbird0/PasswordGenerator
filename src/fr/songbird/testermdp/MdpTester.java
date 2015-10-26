@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 
 import fr.songbird.generator.PasswordGenerated;
-
+import fr.songbird.generator.SizeMdp;
 import fr.songbird.generator.SolidityFlags;
 import fr.songbird.survivalDevKit.CheckEntry;
 
@@ -36,11 +36,11 @@ import fr.songbird.generator.Generator;
  * 
  * MdpTest attributes a tag to generated passwords by Generator class.
  * @author songbird
- * @version 0.1_2-ALPHA
+ * @version 0.2_2-ALPHA
  * @see {@link fr.songbird.generator.Generator}
  *
  */
-public class MdpTester {
+public class MdpTester implements SizeMdp{
 	
 	//###### PRIVATE VARIABLE  ######
 	private static final BasicLogger logger = LoggerFactory.getLogger(MdpTester.class);
@@ -52,9 +52,6 @@ public class MdpTester {
 	
 	public MdpTester(String testTarget){
 		pwg = testProcedure(testTarget);
-		if(pwg.getPasswordGenerated().equals(Generator.getFatalError())){
-			logger.log(LogLevel.ERROR, "Une erreur bloquante est survenue: "+Generator.getFatalError());
-		}
 		logger.log(LogLevel.SUCCESS, "Mot de passe: "+pwg.getPasswordGenerated()+"\n Flag de sécurité: ["+pwg.getSolidityFlags()+"]");
 	}
 	
@@ -69,6 +66,10 @@ public class MdpTester {
 				logger.log(LogLevel.SUCCESS, "Félicitations ! Votre mot de passe respecte les 'standards' de sécurité du générateur.");
 				return new PasswordGenerated(password, getAppropriateFlags(checker.getOccurrenceNumberSum()));
 			}
+		}
+		if(password.equals(Generator.getFatalError())){
+			logger.log(LogLevel.ERROR, "Une erreur bloquante est survenue: "+Generator.getFatalError());
+			Runtime.getRuntime().exit(0x1);
 		}
 		logger.log(LogLevel.WARNING, "Votre mot de passe ne respecte pas les 'standards' de sécurité du générateur, mais reste solide malgré tout.");
 		return new PasswordGenerated(password, getAppropriateFlags(checker.getOccurrenceNumberSum()));

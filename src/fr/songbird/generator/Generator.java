@@ -37,7 +37,7 @@ import fr.songbird.testermdp.MdpTester;
  *  Chief class of the program.
  *  </p>
  * @author songbird
- * @version 1.4_4-ALPHA
+ * @version 1.4_5-ALPHA
  * @see Generator#Generator(CharacteristicsFlags, byte)
  */
 public class Generator implements SizeMdp{
@@ -115,7 +115,7 @@ public class Generator implements SizeMdp{
 			case SIX: return true;
 			case NINE: return true;
 			case TWENTY: return true;
-			case EIGHTEEN: return true;
+			case FIFTEEN: return true;
 			default:
 				return false;
 		}
@@ -152,7 +152,7 @@ public class Generator implements SizeMdp{
 		byte i = 0x0;
 		String password = new String("");
 		while(i<sizeMDP){
-			password += alphbLowerCase[random.nextInt(0x1A)];
+			password += alphbLowerCase[random.nextInt(0x19)];
 			i++;
 		}
 		return password;
@@ -180,7 +180,7 @@ public class Generator implements SizeMdp{
 				i++;
 			}
 			else{
-				password += alphbLowerCase[random.nextInt(0x1A)];
+				password += alphbLowerCase[random.nextInt(0x19)];
 				i++;
 			}
 		}
@@ -203,7 +203,7 @@ public class Generator implements SizeMdp{
 				i++;
 			}
 			else{
-				password += alphbUpperCase[random.nextInt(0x1A)];
+				password += alphbUpperCase[random.nextInt(0x19)];
 				i++;
 			}
 		}
@@ -221,11 +221,11 @@ public class Generator implements SizeMdp{
 		String password = new String("");
 		while(i<sizeMDP){
 			if(random.nextInt(0x2) == 0x0){
-				password += alphbUpperCase[random.nextInt(0x1A)];
+				password += alphbUpperCase[random.nextInt(0x19)];
 				i++;
 			}
 			else{
-				password += alphbLowerCase[random.nextInt(0x1A)];
+				password += alphbLowerCase[random.nextInt(0x19)];
 				i++;
 			}
 		}
@@ -246,11 +246,11 @@ public class Generator implements SizeMdp{
 				i++;
 			}
 			else if(random.nextInt(0x3) == 0x1){
-				password += alphbLowerCase[random.nextInt(0x1A)];
+				password += alphbLowerCase[random.nextInt(0x19)];
 				i++;
 			}
 			else if(random.nextInt(0x3) == 0x2){
-				password += alphbUpperCase[random.nextInt(0x1A)];
+				password += alphbUpperCase[random.nextInt(0x19)];
 				i++;
 			}
 			
