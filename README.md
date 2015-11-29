@@ -1,2 +1,2 @@
 # PasswordGenerator
-A primitive password generator
+A primitive password generator (run in a shell)
